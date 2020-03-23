@@ -12,6 +12,7 @@ library(htmltools)
 
 # Prepare data ------------------------------------------------------------
 
+try_get_data <- try({
 data_rep <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
 
 corona <- list(
@@ -27,6 +28,12 @@ corona <- corona %>% melt(id.vars = 1:5, variable.name = "date", value.name = "c
 # convert date to proper date
 corona <- corona %>% mutate(date = mdy(date))
 
+# save for offline usage
+save(corona, file = "corona.RData")
+})
+
+if(inherits(try_get_data, "try-error")) load("corona.RData")
+
 ## summarize countries
 corona_country <- corona %>% 
   group_by(`Country/Region`, type, date) %>% summarise(cases = sum(cases)) %>%
@@ -38,6 +45,12 @@ corona_country_ranking <- corona_country %>% group_by(`Country/Region`) %>%
   arrange(cases) %>%
   mutate( `Country/Region` = ordered(`Country/Region`, levels = rev(`Country/Region`))) %>%
   .$`Country/Region`
+
+# add other aspects
+corona_country %<>% mutate(
+  `daily cases` = c(NA, diff(cases)),
+  `daily cases/total cases` = `daily cases`/c(NA, cases[-1])
+)
 
 # apply ranking
 corona_country <- corona_country %>% 
@@ -60,10 +73,10 @@ cols <- brewer.pal(12, "Set3")[-2] %>%
   head(length(corona_country_ranking))
 
 # generate figures
-make_subfig <- function(.type, .showlegend) {
+make_subfig <- function(.type, .showlegend, y = ~cases) {
   fig <- subcorona %>% 
     filter(type == .type) %>%  
-    plot_ly(x = ~date, y = ~cases, legendgroup = ~as.character(`Country/Region`),
+    plot_ly(x = ~date, y = y, legendgroup = ~as.character(`Country/Region`),
             name = ~ranked_country,
             color = ~ranked_country,
             colors = cols,
@@ -80,7 +93,7 @@ for(i in 1:3) {
 }
 
 caption <- paste0("based on data provided by https://github.com/CSSEGISandData/COVID-19 ", 
-                  "hosted by the Johns Hopkins Corona Resource Center.",
+                  "hosted by the Johns Hopkins Corona Resource Center. ",
                   "Last update: ", Sys.time(), ". ",
                   "Visualization created by Almond Stoecker. ",
                   "No warranties of any kind.")
@@ -92,6 +105,7 @@ title_confirmed <- "Worldwide overview of confirmed COVID-19 cases"
 
 # save as individual html
 figs[[1]] %>% layout(title = title_confirmed) %>% 
+  layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
   saveWidget("covid-19-time-series-confirmed.html")
 
@@ -103,6 +117,7 @@ title_all <- "Worldwide overview of COVID-19 time series (counts)"
 
 # save
 fig_all %>% layout(title = title_all) %>% 
+  # layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
   saveWidget("covid-19-time-series-all.html")
 
@@ -113,5 +128,22 @@ title_all_log <- "Worldwide overview of COVID-19 time series (log-counts)"
 
 #save
 fig_all %>% layout(title = title_all_log) %>% 
+  layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
   saveWidget("covid-19-time-series-all-log.html")
 
+
+# plot daily cases --------------------------------------------------------
+
+title_daily <- "Worldwide overview of confirmed COVID-19 cases (daily)"
+
+fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases`) %>%
+  layout(yaxis = list(title = "daily cases"))
+fig_daily_rel <- make_subfig("confirmed", FALSE, y = ~`daily cases/total cases`) %>%
+  layout(yaxis = list(title = "relative daily increase"))
+
+fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE) %>% 
+  layout(xaxis = list(rangeslider = list(type = "date")))
+
+fig_daily  %>% layout(title = title_daily) %>% 
+  htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
+  saveWidget("covid-19-time-series-daily.html")
