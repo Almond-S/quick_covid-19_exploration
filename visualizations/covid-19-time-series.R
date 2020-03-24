@@ -73,14 +73,15 @@ cols <- brewer.pal(12, "Set3")[-2] %>%
   head(length(corona_country_ranking))
 
 # generate figures
-make_subfig <- function(.type, .showlegend, y = ~cases) {
+make_subfig <- function(.type, .showlegend, y = ~cases, mode = "lines+markers") {
   fig <- subcorona %>% 
     filter(type == .type) %>%  
     plot_ly(x = ~date, y = y, legendgroup = ~as.character(`Country/Region`),
             name = ~ranked_country,
             color = ~ranked_country,
             colors = cols,
-            type = "scatter", mode = "lines", showlegend = .showlegend)
+            type = "scatter", mode = mode, 
+            showlegend = .showlegend)
   fig <- fig %>% add_trace(
     data = othercorona %>% filter(type == .type), showlegend = .showlegend,
     visible = "legendonly")
@@ -89,7 +90,8 @@ figs <- list()
 for(i in 1:3) {
   .type <- unique(subcorona$type)[i]
   figs[[i]] <- make_subfig( .type, c(TRUE,FALSE,FALSE)[i] )
-  figs[[i]] %<>% layout(yaxis = list(title = .type))
+  figs[[i]] %<>% layout(
+    yaxis = list(title = .type))
 }
 
 caption <- paste0("based on data provided by https://github.com/CSSEGISandData/COVID-19 ", 
@@ -99,13 +101,15 @@ caption <- paste0("based on data provided by https://github.com/CSSEGISandData/C
                   "No warranties of any kind.")
 
 
+rangeslider_config <- list(type = "date", range = list(as.Date("2020-02-22"), as.Date(Sys.time())))
+
 # plot confirmed only -----------------------------------------------------
 
 title_confirmed <- "Worldwide overview of confirmed COVID-19 cases"
 
 # save as individual html
 figs[[1]] %>% layout(title = title_confirmed) %>% 
-  layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
+  layout(xaxis = list(rangeslider = rangeslider_config)) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
   saveWidget("covid-19-time-series-confirmed.html")
 
@@ -117,7 +121,6 @@ title_all <- "Worldwide overview of COVID-19 time series (counts)"
 
 # save
 fig_all %>% layout(title = title_all) %>% 
-  # layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
   saveWidget("covid-19-time-series-all.html")
 
@@ -128,7 +131,6 @@ title_all_log <- "Worldwide overview of COVID-19 time series (log-counts)"
 
 #save
 fig_all %>% layout(title = title_all_log) %>% 
-  layout(xaxis = list(rangeslider = list(type = "date"))) %>% 
   saveWidget("covid-19-time-series-all-log.html")
 
 
@@ -136,13 +138,13 @@ fig_all %>% layout(title = title_all_log) %>%
 
 title_daily <- "Worldwide overview of confirmed COVID-19 cases (daily)"
 
-fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases`) %>%
+fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases`, mode = "lines+markers") %>%
   layout(yaxis = list(title = "daily cases"))
-fig_daily_rel <- make_subfig("confirmed", FALSE, y = ~`daily cases/total cases`) %>%
+fig_daily_rel <- make_subfig("confirmed", FALSE, y = ~`daily cases/total cases`, mode = "lines+markers") %>%
   layout(yaxis = list(title = "relative daily increase"))
 
 fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE) %>% 
-  layout(xaxis = list(rangeslider = list(type = "date")))
+  layout(xaxis = list(rangeslider = rangeslider_config))
 
 fig_daily  %>% layout(title = title_daily) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
