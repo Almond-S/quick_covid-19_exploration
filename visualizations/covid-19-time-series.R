@@ -8,7 +8,7 @@ library(stringr)
 library(RColorBrewer)
 library(htmlwidgets)
 library(htmltools)
-
+library(orca)
 
 # Prepare data ------------------------------------------------------------
 
@@ -41,8 +41,9 @@ corona_country <- corona %>%
 
 ## prepare ranking
 corona_country_ranking <- corona_country %>% group_by(`Country/Region`) %>%
+  mutate(cases_today = max(cases, na.rm = TRUE)) %>%
   filter(date == max(date), type == "confirmed") %>% ungroup %>% 
-  arrange(cases) %>%
+  arrange(cases_today) %>%
   mutate( `Country/Region` = ordered(`Country/Region`, levels = rev(`Country/Region`))) %>%
   .$`Country/Region`
 
@@ -51,15 +52,25 @@ corona_country %<>% mutate(
   `daily cases` = c(NA, diff(cases)),
   `daily cases/total cases` = `daily cases`/c(NA, cases[-1])
 )
+corona_country[na.omit(corona_country$`daily cases/total cases`==-Inf),
+              "daily cases/total cases"] <- NA
 
 # apply ranking
 corona_country <- corona_country %>% 
   mutate(
-    `Country/Region` = ordered(`Country/Region`, 
+    `Country/Region` = ordered(`Country/Region`,
                                levels = levels(corona_country_ranking)),
     ranked_country = paste(
       str_pad(as.numeric(`Country/Region`), 3, pad = 0), 
       `Country/Region`))
+
+    # cases_today = max(cases, na.rm = TRUE),
+    # cases_country = paste(
+    #   str_pad(cases_today, 6, pad = 0), 
+    #   `Country/Region`)) %>% ungroup()
+
+
+
 selected_countries <- c("Germany", "France", "Spain", "US", "Italy", "United Kingdom")
 subcorona <- corona_country %>% filter(`Country/Region` %in% selected_countries)
 othercorona <- corona_country %>% filter(!(`Country/Region` %in% selected_countries))
@@ -103,49 +114,70 @@ caption <- paste0("based on data provided by https://github.com/CSSEGISandData/C
 
 rangeslider_config <- list(type = "date", range = list(as.Date("2020-02-22"), as.Date(Sys.time())))
 
+# thumb_plotter
+
+make_thumb <- function(p, name) {
+  p %>% layout(showlegend = FALSE) %>% 
+    orca( file = paste0("thumb/", name, ".png"), width = 2, height = 1)
+}
+
 # plot confirmed only -----------------------------------------------------
 
 title_confirmed <- "Worldwide overview of confirmed COVID-19 cases"
+file_confirmed <- "covid-19-time-series-confirmed"
 
 # save as individual html
 figs[[1]] %>% layout(title = title_confirmed) %>% 
   layout(xaxis = list(rangeslider = rangeslider_config)) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
-  saveWidget("covid-19-time-series-confirmed.html")
-
+  saveWidget(paste0(file_confirmed, ".html"))
+# save thumb png
+figs[[1]] %>% make_thumb(file_confirmed)
 
 # plot all: confirmed, deaths, and recovered ------------------------------
 
 fig_all <- do.call(subplot, c(figs, nrows = 3, shareX = TRUE, titleY = TRUE))
 title_all <- "Worldwide overview of COVID-19 time series (counts)"
+file_all <- "covid-19-time-series-all"
 
 # save
 fig_all %>% layout(title = title_all) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
-  saveWidget("covid-19-time-series-all.html")
+  saveWidget(paste0(file_all, ".html"))
+fig_all %>% make_thumb(file_all)
 
 
 # plot all on log-scale ---------------------------------------------------
 
 title_all_log <- "Worldwide overview of COVID-19 time series (log-counts)"
+file_all_log <- "covid-19-time-series-all-log"
+
+for(i in 1:3) 
+  figs[[i]] %<>% layout(yaxis = list(type = "log"))
+fig_all <- do.call(subplot, c(figs, nrows = 3, shareX = TRUE, titleY = TRUE))
 
 #save
 fig_all %>% layout(title = title_all_log) %>% 
-  saveWidget("covid-19-time-series-all-log.html")
-
+  saveWidget(paste0(file_all_log, ".html"))
+fig_all %>%  
+  make_thumb(file_all_log)
 
 # plot daily cases --------------------------------------------------------
 
 title_daily <- "Worldwide overview of confirmed COVID-19 cases (daily)"
+file_daily <- "covid-19-time-series-daily"
 
 fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases`, mode = "lines+markers") %>%
   layout(yaxis = list(title = "daily cases"))
 fig_daily_rel <- make_subfig("confirmed", FALSE, y = ~`daily cases/total cases`, mode = "lines+markers") %>%
   layout(yaxis = list(title = "relative daily increase"))
 
-fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE) %>% 
-  layout(xaxis = list(rangeslider = rangeslider_config))
+fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE)
 
 fig_daily  %>% layout(title = title_daily) %>% 
+  layout(xaxis = list(rangeslider = rangeslider_config)) %>% 
   htmlwidgets::appendContent(htmltools::tags$p(caption)) %>% 
-  saveWidget("covid-19-time-series-daily.html")
+  saveWidget(paste0(file_daily, ".html"))
+fig_daily %>% make_thumb(file_daily)
+
+
