@@ -5,4 +5,6 @@ Quick visualizations and exploration of COVID-19 count time series.
 
 - repository contains only a few quick interactive plotly plots so far. 
 
-- web-page content to come soon (probably tomorrow)
+- reasonable web-page content to come soon 
+
+- here is already a simple link to an [Overview of Worldwide Confirmed COVID-19 Cases Time Series](visualizations/covid-19-time-series-confirmed.html).
