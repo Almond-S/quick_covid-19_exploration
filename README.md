@@ -10,15 +10,15 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
   <a href="visualizations/covid-19-time-series-confirmed.html">
     <img alt="COnfirmed COVID-19 cases" src="visualizations/thumb/covid-19-time-series-confirmed.png">
   </a>
-  <center> <p> Daily cases </p> </center>
-  <a href="visualizations/covid-19-time-series-daily.html">
-    <img alt="Daily COVID-19 counts" src="visualizations/thumb/covid-19-time-series-daily.png">
+  <center> <p> Total confirmed cases, deaths and recovered </p> </center>
+  <a href="visualizations/covid-19-time-series-all.html">
+    <img alt="COVID-19 confirmed, deaths and recovered" src="visualizations/thumb/covid-19-time-series-all.png">
   </a>
   </div>
   <div class="column" style="flex:50%;padding=5px" >
-   <center> <p> Total confirmed cases, deaths and recovered </p> </center>
-  <a href="visualizations/covid-19-time-series-all.html">
-    <img alt="COVID-19 confirmed, deaths and recovered" src="visualizations/thumb/covid-19-time-series-all.png">
+  <center> <p> Daily cases </p> </center>
+  <a href="visualizations/covid-19-time-series-daily.html">
+    <img alt="Daily COVID-19 counts" src="visualizations/thumb/covid-19-time-series-daily.png">
   </a>
   <center> <p> Confirmed, deaths and recovered on log-scale</p> </center>
   <a href="visualizations/covid-19-time-series-all-log.html">
