@@ -4,7 +4,7 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
 #### An overwiew over worldwide COVID-19 time-series in some interactive charts:
 
 <center>
-<div class="row" style="width:70%;display:flex" >
+<div class="row" style="width:90%;display:flex" >
   <div class="column" style="flex:50%;padding=5px" >
   <center> <p> Total confirmed cases </p> </center>
   <a href="visualizations/covid-19-time-series-confirmed.html">
