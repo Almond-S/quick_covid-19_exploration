@@ -26,10 +26,10 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
   <center> <p> Total confirmed cases </p> </center>
   <a href="visualizations/covid-19-time-series-confirmed.html">
     <img alt="Confirmed COVID-19 cases" src="visualizations/thumb/covid-19-time-series-confirmed.png">
-    <div class="overlay">
-      <div class="text">View chart</div>
-    </div>
   </a>
+  <div class="overlay">
+    <div class="text">View chart</div>
+  </div>
   <center> <p> Total confirmed cases, deaths and recovered </p> </center>
   <a href="visualizations/covid-19-time-series-all.html">
     <img alt="COVID-19 confirmed, deaths and recovered" src="visualizations/thumb/covid-19-time-series-all.png">
