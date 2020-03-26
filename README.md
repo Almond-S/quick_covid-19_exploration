@@ -3,6 +3,22 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
 
 #### An overwiew over worldwide COVID-19 time-series in some interactive charts:
 
+<style>
+  
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+</style>
+
 <body>
 <center>
 <div class="row" style="width: 90%; display: flex;" >
