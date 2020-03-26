@@ -16,23 +16,34 @@ try_get_data <- try({
 data_rep <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
 
 corona <- list(
-  confirmed = read.csv(paste0(data_rep, "time_series_19-covid-Confirmed.csv"), check.names = FALSE),
-  deaths = read.csv(paste0(data_rep, "time_series_19-covid-Deaths.csv"), check.names = FALSE),
-  recovered = read.csv(paste0(data_rep, "time_series_19-covid-Recovered.csv"), check.names = FALSE)
+  confirmed = read.csv(paste0(data_rep, "time_series_covid19_confirmed_global.csv"), check.names = FALSE),
+  deaths = read.csv(paste0(data_rep, "time_series_covid19_deaths_global.csv"), check.names = FALSE),
+  recovered = read.csv(paste0(data_rep, "time_series_covid19_recovered_global.csv"), check.names = FALSE)
 )
+# fix name issue in recovered
+names(corona$recovered)[1] <- "Province/State"
 
+for(i in 1:3) {
+  # flatten in long format
+  corona[[i]] %<>% melt(id.vars = 1:4, variable.name = "date", value.name = "cases")
+  # convert date to proper date
+  corona[[i]] %<>% mutate(date = mdy(date))
+}
+  
 # merge
 corona <- bind_rows(corona, .id = "type")
-# flatten in long format
-corona <- corona %>% melt(id.vars = 1:5, variable.name = "date", value.name = "cases")
-# convert date to proper date
-corona <- corona %>% mutate(date = mdy(date))
+
+# set negative cases ?? to NA
+corona[corona$cases < 0, "cases"] <- NA
 
 # save for offline usage
 save(corona, file = "corona.RData")
 })
 
 if(inherits(try_get_data, "try-error")) load("corona.RData")
+
+## remove longitude and latitude
+corona %<>% select(-Lat, -Long)
 
 ## summarize countries
 corona_country <- corona %>% 
