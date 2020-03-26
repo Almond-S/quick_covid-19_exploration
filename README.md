@@ -3,9 +3,10 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
 
 #### An overwiew over worldwide COVID-19 time-series in some interactive charts:
 
+<body>
 <center>
-<div class="row" style="width:90%; display:flex;" >
-  <div class="column" style="flex:50%; padding: 15px;" >
+<div class="row" style="width: 90%; display: flex;" >
+  <div class="column" style="flex: 50%; padding: 15px;" >
   <center> <p> Total confirmed cases </p> </center>
   <a href="visualizations/covid-19-time-series-confirmed.html">
     <img alt="COnfirmed COVID-19 cases" src="visualizations/thumb/covid-19-time-series-confirmed.png">
@@ -15,7 +16,7 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
     <img alt="COVID-19 confirmed, deaths and recovered" src="visualizations/thumb/covid-19-time-series-all.png">
   </a>
   </div>
-  <div class="column" style="flex:50%; padding: 15px;" >
+  <div class="column" style="flex: 50%; padding: 15px;" >
   <center> <p> Daily cases </p> </center>
   <a href="visualizations/covid-19-time-series-daily.html">
     <img alt="Daily COVID-19 counts" src="visualizations/thumb/covid-19-time-series-daily.png">
@@ -27,3 +28,4 @@ Quick visualizations and exploration of COVID-19 count time series based on the 
   </div>
 </div>
 </center>
+</body>
