@@ -1,10 +1,10 @@
 # quick_covid-19_exploration
-Quick visualizations and exploration of COVID-19 count time series based on the data provided in https://github.com/CSSEGISandData/2019-nCoV hosted by the [Johns Hopkins Coronavirus Resource Center](https://coronavirus.jhu.edu/).
+Quick visualizations and exploration of COVID-19 count time series based on the data provided in [github.com/CSSEGISandData/2019-nCoV](https://github.com/CSSEGISandData/2019-nCoV) hosted by the [Johns Hopkins Coronavirus Resource Center](https://coronavirus.jhu.edu/).
 
 #### An overwiew over worldwide COVID-19 time-series in some interactive charts:
 
 <center>
-<div class="row" style="width:90%;display:flex;padding=5px" >
+<div class="row" style="width:90%; padding=5px; display:flex;" >
   <div class="column" style="flex:50%;padding=5px" >
   <center> <p> Total confirmed cases </p> </center>
   <a href="visualizations/covid-19-time-series-confirmed.html">
