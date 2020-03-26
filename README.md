@@ -1,15 +1,29 @@
 # quick_covid-19_exploration
-Quick visualizations and exploration of COVID-19 count time series. 
+Quick visualizations and exploration of COVID-19 count time series based on the data provided in https://github.com/CSSEGISandData/2019-nCoV hosted by the [Johns Hopkins Coronavirus Resource Center](https://coronavirus.jhu.edu/).
 
-- Based on the data provided in https://github.com/CSSEGISandData/2019-nCoV hosted by the [Johns Hopkins Coronavirus Resource Center](https://coronavirus.jhu.edu/).
+#### An overwiew over worldwide COVID-19 time-series in some interactive charts:
 
-- repository contains only a few quick interactive plotly charts so far. 
-
-- reasonable web-page content to come soon 
-
-- here are already simple links to:
-
-  - [an Overview of Worldwide Confirmed COVID-19 Cases Time Series](visualizations/covid-19-time-series-confirmed.html)
-  - [COVID-19 Cases Time Series for confirmed cases, deaths and recovered](visualizations/covid-19-time-series-all.html)
-  - [...the same with log-counts](visualizations/covid-19-time-series-all-log.html)
-  - [an Overview of daily cases (also relative to cummulative cases)](visualizations/covid-19-time-series-daily.html)
+<center>
+<div class="row" style="width:70%;display:flex" >
+  <div class="column" style="flex:50%;padding=5px" >
+  <center> <p> Total confirmed cases </p> </center>
+  <a href="visualizations/covid-19-time-series-confirmed.html">
+    <img alt="COnfirmed COVID-19 cases" src="visualizations/thumb/covid-19-time-series-confirmed.png">
+  </a>
+  <center> <p> Daily cases </p> </center>
+  <a href="visualizations/covid-19-time-series-daily.html">
+    <img alt="Daily COVID-19 counts" src="visualizations/thumb/covid-19-time-series-daily.png">
+  </a>
+  </div>
+  <div class="column" style="flex:50%;padding=5px" >
+   <center> <p> Total confirmed cases, deaths and recovered </p> </center>
+  <a href="visualizations/covid-19-time-series-all.html">
+    <img alt="COVID-19 confirmed, deaths and recovered" src="visualizations/thumb/covid-19-time-series-all.png">
+  </a>
+  <center> <p> Confirmed, deaths and recovered on log-scale</p> </center>
+  <a href="visualizations/covid-19-time-series-all-log.html">
+    <img alt="COVID-19 confirmed, deaths and recovered (log-scale)" src="visualizations/thumb/covid-19-time-series-all-log.png">
+  </a>
+  </div>
+</div>
+</center>
