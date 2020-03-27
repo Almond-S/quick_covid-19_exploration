@@ -97,7 +97,7 @@ cols <- brewer.pal(12, "Set3")[-2] %>%
 # generate figures
 make_subfig <- function(.type, .showlegend, y = ~cases, mode = "lines+markers") {
   fig <- subcorona %>% 
-    filter(type == .type) %>%  
+    filter(type %in% .type) %>%  
     plot_ly(x = ~date, y = y, legendgroup = ~as.character(`Country/Region`),
             name = ~ranked_country,
             color = ~ranked_country,
