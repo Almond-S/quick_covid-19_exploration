@@ -227,7 +227,7 @@ file_daily <- "covid-19-time-series-daily"
 fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases`, mode = "lines+markers") %>%
   layout(yaxis = list(title = "daily cases"))
 fig_daily_rel <- make_subfig("confirmed", FALSE, y = ~`daily cases/total cases`, mode = "lines+markers") %>%
-  layout(yaxis = list(title = "relative daily increase"))
+  layout(yaxis = list(title = "relative daily increase\n (values<1.5)", range = c(0,1.5)))
 
 fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE)
 
