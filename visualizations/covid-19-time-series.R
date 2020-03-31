@@ -130,9 +130,10 @@ subcorona <- corona_country %>% filter(`Country/Region` %in% selected_countries)
 othercorona <- corona_country %>% filter(!(`Country/Region` %in% selected_countries))
 
 # make repeating colors
+n_country <- length(unique(corona_country$`Country/Region`))
 cols <- brewer.pal(12, "Set3")[-2] %>% 
-  rep(length(corona_country_ranking) %/% 11 + 1) %>% 
-  head(length(corona_country_ranking))
+  rep(n_country %/% 11 + 1) %>% 
+  head(n_country)
 
 # generate figures
 make_subfig <- function(.type, .showlegend, y = ~cases, 
