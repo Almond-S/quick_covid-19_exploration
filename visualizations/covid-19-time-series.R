@@ -176,7 +176,7 @@ rangeslider_config <- list(type = "date", range = list(as.Date("2020-02-22"), as
 
 make_thumb <- function(p, name) {
   p %>% layout(showlegend = FALSE) %>% 
-    orca( file = paste0("thumbs/", name, ".png"), width = 2, height = 1)
+    orca( file = paste0("thumb/", name, ".png"), width = 2, height = 1)
 }
 
 # plot confirmed only -----------------------------------------------------
