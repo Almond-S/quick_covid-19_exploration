@@ -124,6 +124,7 @@ corona_country <- corona_country %>% group_by(`Country/Region`) %>%
     ranked_country_in100k = paste(
       str_pad(rank_today_in100k, 3, pad = 0), 
       `Country/Region`))
+save(corona_country, file = "conrona_country.RData")
 
 selected_countries <- c("Germany", "France", "Spain", "US", "Italy", "United Kingdom")
 subcorona <- corona_country %>% filter(`Country/Region` %in% selected_countries)
