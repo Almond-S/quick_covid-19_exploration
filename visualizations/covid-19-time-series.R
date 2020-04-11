@@ -247,10 +247,10 @@ file_daily <- "covid-19-time-series-daily-100k"
 
 fig_daily <- make_subfig("confirmed", TRUE, y = ~`daily cases in 100k`, 
                          mode = "lines+markers", name = ~ranked_country_in100k) %>%
-  layout(yaxis = list(title = "daily positively tested in 100k"))
+  layout(yaxis = list(title = "daily confirmed\n in 100k"))
 fig_daily_rel <- make_subfig("deaths", FALSE, y = ~`daily cases in 100k`, 
                              mode = "lines+markers", name = ~ranked_country_in100k) %>%
-  layout(yaxis = list(title = "daily deaths in 100k"))
+  layout(yaxis = list(title = "daily deaths\n in 100k"))
 
 fig_daily %<>% subplot(fig_daily_rel, nrows = 2, shareX = TRUE, titleY = TRUE)
 
