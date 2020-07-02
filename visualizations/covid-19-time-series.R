@@ -55,8 +55,8 @@ corona_country %<>% group_by(`Country/Region`, type) %>% mutate(
   `daily cases` = c(NA, diff(cases)),
   `daily cases/total cases` = `daily cases`/c(NA, cases[-length(cases)])
 ) %>% ungroup()
-corona_country[na.omit(corona_country$`daily cases/total cases`==-Inf),
-              "daily cases/total cases"] <- NA
+# corona_country[na.omit(which(corona_country$`daily cases/total cases`==-Inf)),
+              # "daily cases/total cases"] <- NA
 
 
     # cases_today = max(cases, na.rm = TRUE),
